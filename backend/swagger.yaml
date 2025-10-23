@@ -1,0 +1,66 @@
+openapi: 3.1.0
+info:
+  title: Front and Back API
+  version: 1.0.0
+  description: |
+    API for generating greetings with optional age-based messaging.
+servers:
+  - url: http://localhost:4000
+paths:
+  /health:
+    get:
+      summary: Health check endpoint
+      responses:
+        '200':
+          description: Health status
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+  /api/greet:
+    post:
+      summary: Generate a greeting message
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - age
+              properties:
+                name:
+                  type: string
+                  description: Name of the person to greet.
+                  example: Alice
+                age:
+                  type: integer
+                  minimum: 0
+                  description: Age used to determine if the user is "old".
+                  example: 30
+      responses:
+        '200':
+          description: Greeting generated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Hello Alice you are old!
+        '400':
+          description: Validation error for input data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Name is required.
